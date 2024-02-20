@@ -1,7 +1,5 @@
-import { Telegraf } from "telegraf";
+import { bot } from "../index";
 import { message } from "telegraf/filters";
-
-const bot = new Telegraf("6752872247:AAFgvm-g5xWWOgvDXn6WncF8Thpv1-62wEs");
 
 bot.command("quit", async (ctx) => {
   // Explicit usage
@@ -9,6 +7,12 @@ bot.command("quit", async (ctx) => {
 
   // Using context shortcut
   await ctx.leaveChat();
+});
+
+bot.command("hello", async (ctx) => {
+  console.log("🚀 ~ ctx:", ctx);
+  // Explicit usage
+  await ctx.reply(`good morning`);
 });
 
 bot.on(message("text"), async (ctx) => {
@@ -39,12 +43,4 @@ bot.on("inline_query", async (ctx) => {
   await ctx.answerInlineQuery(result);
 });
 
-bot.start((ctx) => ctx.reply("Welcome"));
-
-bot.launch();
-
 export default bot;
-
-// Enable graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
