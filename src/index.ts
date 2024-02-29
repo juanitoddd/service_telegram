@@ -3,8 +3,8 @@ import "dotenv/config";
 import "module-alias/register";
 import express, { Application, Router, json } from "express";
 import { Telegraf } from "telegraf";
-// import { rabbitConsume } from '@shared'
-// import consumer from './functions/consumer';
+import { rabbitConsume } from './functions/rabbit'
+import consumer from './functions/consumer';
 
 // Routes
 import routesMain from "./routes/main.route";
@@ -13,9 +13,7 @@ const router = Router();
 const app: Application = express();
 
 // Web status bot
-export const bot = new Telegraf(
-  "6752872247:AAFgvm-g5xWWOgvDXn6WncF8Thpv1-62wEs"
-);
+export const bot = new Telegraf(process.env.TELEGRAM_BOT);
 
 bot.start((ctx) => {
   ctx.reply("Hello " + ctx.from.first_name + "!");
@@ -50,4 +48,4 @@ app.listen(PORT, (): void => {
 });
 
 // RabbitMQ Queue
-// rabbitConsume('template', consumer);
+rabbitConsume('telegram', consumer);
