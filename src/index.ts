@@ -3,8 +3,8 @@ import "dotenv/config";
 import "module-alias/register";
 import express, { Application, Router, json } from "express";
 import { Telegraf } from "telegraf";
-import { rabbitConsume } from './functions/rabbit'
-import consumer from './functions/consumer';
+import { rabbitConsume } from "./functions/rabbit";
+import consumer from "./functions/consumer";
 
 // Routes
 import routesMain from "./routes/main.route";
@@ -40,6 +40,7 @@ app.use("/api/telegram/v1", router);
 
 const _date = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
 console.log(`[Date] ${_date}`);
+console.log("[ENV]", process.env.NODE_ENV);
 
 // HTTP Server
 const PORT = process.env.PORT || 5006;
@@ -48,4 +49,4 @@ app.listen(PORT, (): void => {
 });
 
 // RabbitMQ Queue
-rabbitConsume('telegram', consumer);
+if (process.env.NODE_ENV === "PRODUCTION") rabbitConsume("telegram", consumer);
