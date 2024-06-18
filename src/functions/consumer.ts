@@ -18,6 +18,8 @@ const consumer = (_msg: RabbitMsg) => {
         case 'table':
             send(JSON.stringify(_msg.payload))
             break;
+        default:
+            console.log('_msg does not have a format')
     }    
 }
 
